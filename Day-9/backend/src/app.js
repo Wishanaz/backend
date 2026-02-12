@@ -3,9 +3,11 @@
 const express = require("express")
 const noteModel = require("./model/note.model")
 const cors = require("cors")
+const path = require("path")
 
 const app = express()
 app.use(express.json())
+app.use(express.static("./public"))
 app.use(cors())
 
 
@@ -70,6 +72,12 @@ app.patch("/api/notes/:id", async (req,res)=>{
     res.status(200).json({
         message:"Note Updated Successfully."
     })
+})
+
+// adding another middlewhere here after frontend build part
+// console.log(__dirname)
+app.use('*name',(req,res)=>{
+    res.sendFile(path.join(__dirname,"..","/public/index.html"))
 })
 
 
