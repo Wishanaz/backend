@@ -16,16 +16,62 @@ html{
 
 }
 
+.note-create-form{
+  display: flex;
+  gap: 1rem;
+  padding-inline: 3rem;
+  padding-block: 2rem;
+  
+  input{
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+  }
+  button{
+    padding: 1rem 1.5rem;
+    background-color: rgb(1, 121, 79);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+}
+
+
 .notes{
   display: flex;
   gap: 1rem;
   padding: 1rem;
+  flex-wrap: wrap;
 }
 
 .note{
-  background-color: rgb(65, 63, 63);
+  background: linear-gradient(to top,rgba(68, 124, 99, 0.453),rgba(38, 115, 97, 0.429));
   color: white;
   border-radius: 0.7rem;
   padding: 2rem;
   max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  p{
+    margin-bottom: 1.5rem;
+  }
+  .delete{
+    background: linear-gradient(to bottom,rgb(240, 82, 82), rgb(148, 25, 25));
+    color: white;
+  }
+  .update{
+    background: linear-gradient(to bottom,rgb(116, 199, 213), rgb(20, 87, 99));
+    color: white;
+  }
+  button{
+    font-size: 1rem;
+    padding-block: 0.5rem;
+    border: none;
+    border-radius: 0.2rem;
+  }
+  button:active{
+    scale: 0.9;
+  }
+
 }
