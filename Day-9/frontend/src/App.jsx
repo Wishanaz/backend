@@ -17,7 +17,7 @@ const App = () => {
   //making a function and writing axios code in it then we will call that function in useEffect()
   // Fetch Notes
   function fetchNotes() {
-    axios.get("http://localhost:3000/api/notes").then((res) => {
+    axios.get("https://backend-t6tb.onrender.com/api/notes").then((res) => {
       setNotes(res.data.notes);
     });
   }
@@ -33,7 +33,7 @@ const App = () => {
 
     if (editId) {
       axios
-        .patch(`http://localhost:3000/api/notes/${editId}`, {
+        .patch(`https://backend-t6tb.onrender.com/api/notes/${editId}`, {
           title,
           description,
         })
@@ -43,7 +43,7 @@ const App = () => {
         });
     } else {
       axios
-        .post("http://localhost:3000/api/notes", {
+        .post("https://backend-t6tb.onrender.com/api/notes", {
           title,
           description,
         })
@@ -63,7 +63,7 @@ const App = () => {
   //Making a function for delete functionality
   function handleDeleteNote(noteId) {
     //calling delete api through axios
-    axios.delete("http://localhost:3000/api/notes/" + noteId).then((res) => {
+    axios.delete("https://backend-t6tb.onrender.com/api/notes/" + noteId).then((res) => {
       console.log(res.data);
       fetchNotes();
     });
