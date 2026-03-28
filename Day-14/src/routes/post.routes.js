@@ -12,5 +12,18 @@ const upload = multer({storage:multer.memoryStorage()}) // for storing file in m
 
 postRouter.post("/", upload.single("image"),postController.createPostController  )
 
+/**
+ * GET /api/post/
+ * get all the posts of that particular user requesting it.
+ */
+postRouter.get("/", postController.getPostController)
+
+
+/**
+ * GET /api/post/details:postid
+ * return detail about specific post and also checks if that post is made by that user 
+ */
+
+postRouter.get("/details:postid", postController.getPostDetailsController)
 
 module.exports = postRouter

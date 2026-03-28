@@ -13,6 +13,6 @@ authRouter.post("/register", authController.registerController)
  * Login
  * POST /api/auth/login
  */
-authRouter.post("/login", authController.loginController)
+authRouter.post("/login", authController.loginController) 
 
 module.exports = authRouter
