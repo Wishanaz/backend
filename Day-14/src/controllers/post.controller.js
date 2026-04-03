@@ -120,15 +120,18 @@ async function getPostDetailsController(req,res){
   }
 
   // to check post wala user or req wala user donbo same h k ni
-  const isValidUser = post.user === userId
+  const isValidUser = post.user.toString() === userId
+
+  //agr dono same ni hue to return kar jao
   if(!isValidUser){
     return res.status(403).json({
       message:"Forbidden Content"
     })
   }
-
+ 
+  //ab dono match kr jaen to return response
   return res.status(200).json({
-    message: "Post fetched successfully",
+    message: "Post fetched successfully!",
     post
   })
 }
