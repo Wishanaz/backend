@@ -7,24 +7,32 @@ const upload = multer({storage:multer.memoryStorage()}) // for storing file in m
 const identifyUser = require("../middlewares/auth.middleware")
 
 /**
- * POST /api/post/   [protected]-> valid token user can post only otherwise 401(unauthorise access)
+ * @routes POST /api/post/   [protected]-> valid token user can post only otherwise 401(unauthorise access)
+ * @description create a post by user with content and image and store in database
  * req.body = {caption, image-file}
  */
 
 postRouter.post("/", upload.single("image"), identifyUser,postController.createPostController  )
 
 /**
- * GET /api/post/
- * get all the posts of that particular user requesting it.
+ * @routes GET /api/post/
+ * @description get all the posts of that particular user requesting it.
  */
 postRouter.get("/", identifyUser ,postController.getPostController)
 
 
 /**
- * GET /api/post/details:postid
- * return detail about specific post and also checks if that post is made by that user 
+ * @routes GET /api/post/details:postid
+ * @description return detail about specific post and also checks if that post is made by that user 
  */
 
 postRouter.get("/details:postid", postController.getPostDetailsController)
+
+
+/**
+ * @route POST /api/post/like/:postid
+ * @description like a post with the id given in the params
+ */
+postRouter.post("/like/:postId", identifyUser, postController.likePostController)
 
 module.exports = postRouter

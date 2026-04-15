@@ -9,6 +9,8 @@ const imageKit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
 });
 
+const likeModel = require("../models/like.model")
+
 /**
  * creating post logic
  */
@@ -54,6 +56,9 @@ async function getPostController(req,res){
 
 }
 
+/**
+ * getting post details logic
+ */
 async function getPostDetailsController(req,res){
   
 
@@ -85,4 +90,35 @@ async function getPostDetailsController(req,res){
   })
 }
 
-module.exports = { createPostController, getPostController, getPostDetailsController};
+/**
+ * like post controller
+ */
+async function likePostController(req,res){
+
+  //1. konsa user like kr rha h
+  const username = req.user.username
+  //2. konsa post like krna h
+  const postId = req.params.postId
+
+  //3. check: if post exists?
+  const post = await postModel.findById(postId)
+
+  if(!post){
+    return res.status(404).json({
+      message: "post not found"
+    })
+  }
+
+  const like = await likeModel.create({
+    post: postId,
+    user: username
+  })
+
+  res.status(200).json({
+    message:"post liked successfully",
+    like
+  })
+
+}
+
+module.exports = { createPostController, getPostController, getPostDetailsController, likePostController };
