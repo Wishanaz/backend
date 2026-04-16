@@ -26,7 +26,7 @@ postRouter.get("/", identifyUser ,postController.getPostController)
  * @description return detail about specific post and also checks if that post is made by that user 
  */
 
-postRouter.get("/details:postid", postController.getPostDetailsController)
+postRouter.get("/details/:postId",identifyUser ,postController.getPostDetailsController)
 
 
 /**
