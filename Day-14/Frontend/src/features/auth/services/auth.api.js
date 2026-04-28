@@ -26,7 +26,7 @@ export async function login(username, password){
     try{
         const res = await api.post("/login", {
              username,
-            password
+             password
         })
         return res.data
     

@@ -49,9 +49,9 @@ const Register = () => {
         placeholder='Enter you password'
         onChange={handleChange}
         />
-        <button type="submit">Register</button>
+        <button className='button primary-button' type="submit">Register</button>
 
-        <p>Already have an account? <Link className='toggleAuthForm' to='/login'>Login</Link> </p>
+        <p>Already have an account? <Link className='toggleAuthForm' to='/login'>Login.</Link> </p>
 
 
       </form>

@@ -13,12 +13,13 @@ const Login = () => {
   // usestate for name and password
   const [formData, setFormData] = useState({username:"", password:""})
 
-  const {handleLogin, loading} = useAuth()
+  const {user, handleLogin, loading} = useAuth()
+
   const navigate = useNavigate()
 
   if(loading){
     return(
-      <h1>Loading...</h1>
+      <main><h1>Loading...</h1></main>
     )
   }
 
@@ -32,7 +33,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    handleLogin(formData.username, formData.password).then(res => {console.log(res), navigate("/")})
+    await handleLogin(formData.username, formData.password).then(res => {console.log(res), navigate("/")})
 
  
   }
@@ -54,9 +55,9 @@ const Login = () => {
                 placeholder='Enter your password'
                 onChange={handleChange}
                 />
-                <button type='submit'>Login</button>
+                <button className='button primary-button' type='submit'>Login</button>
 
-                <p>Don't have an account? <Link className='toggleAuthForm' to='/register'>Register</Link></p>
+                <p>Don't have an account? <Link className='toggleAuthForm' to='/register'>Create One.</Link></p>
             </form>
         </div>
     </main>

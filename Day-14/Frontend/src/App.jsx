@@ -1,5 +1,5 @@
 import AppRoutes from './AppRoutes'
-import './style.scss'
+import './features/shared/global.scss'
 
 import { AuthProvider } from './features/auth/auth.context.jsx'
 
