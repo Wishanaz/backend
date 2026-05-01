@@ -1,5 +1,6 @@
 const postModel = require("../models/post.models");
 
+
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
 
@@ -121,4 +122,33 @@ async function likePostController(req,res){
 
 }
 
-module.exports = { createPostController, getPostController, getPostDetailsController, likePostController };
+/**
+ * get all posts and show in the feed
+ */
+async function getFeedController(req,res){
+
+  const user = req.user
+
+  // get all post + user detail also
+  const posts = await Promise.all((await postModel.find().populate("user").lean())
+  .map( async(post)=>{
+    /**
+     * type of psot is mongoose obj
+     * lean makes them as a normal obj and new properties can be created
+     */
+    const isLiked = await likeModel.findOne({
+      user: user.username,
+      post: post._id
+    })
+    post.isLiked = Boolean(isLiked) //!!isLiked means if isLiked is null then false and if it has some value then true
+    return post
+  }))
+
+  res.status(200).json({
+    message:"posts fetched successfully!",
+    posts
+  })
+
+}
+
+module.exports = { createPostController, getPostController, getPostDetailsController, likePostController, getFeedController };

@@ -70,7 +70,7 @@ async function loginController(req,res){
                 email:email
             }
         ]
-    })
+    }).select("+password")
 
     // check if both are not in db so it means user not found
     if(!user){
@@ -96,7 +96,7 @@ async function loginController(req,res){
         {expiresIn:"1d"}
     )
 
-    res.cookie("token", token)
+    res.cookie("token", token);
 
     res.status(200).json({
         message:"User logged in successfully",

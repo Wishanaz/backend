@@ -16,7 +16,7 @@ const postSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         required:[true, "user id is required for creating a post"]
     }
-})
+}, {timestamps: true})
 
 const postModel = mongoose.model("post", postSchema)
 

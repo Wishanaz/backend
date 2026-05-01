@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../hooks/useAuth';
 
 import axios from 'axios'
 
@@ -7,6 +10,15 @@ const Register = () => {
 
   //usestate for name,email,password
   const [formData, setFormData] = useState({username:"", email:"", password:""})
+
+  const {handleRegister, loading} = useAuth()
+  const navigate = useNavigate()
+
+  if(loading){
+    return(
+      <main><h1>Loading...</h1></main>
+    )
+  }
 
   const handleChange = (e)=>{
     setFormData({
@@ -18,16 +30,13 @@ const Register = () => {
   const handleSubmit = async (e)=>{
     e.preventDefault()
 
-  //   try{
-  //     const res = await axios.post("http://localhost:3000/api/auth/register", formData, {withCredentials:true}) // yahan se data is url pe bhejo
-  //     console.log(res.data)
-  //   } catch(error){
-  //     console.log(error.response?.data || error.message); // agar backend ne error response bhja h to uska data dekhao wrna error msg dekhao
-  //   }
+    await handleRegister(formData.username, formData.email, formData.password).then(res => console.log(res), navigate("/"))
   }
 
+
+
   return (
-  <main>
+  <main className='form'>
     <div className="form-container">
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
