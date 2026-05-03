@@ -26,6 +26,12 @@ async function createPostController(req, res) {
     folder: "Cohort-2-insta-clone-posts",
   });
 
+  if (!req.file && !req.body.caption) {
+  return res.status(400).json({
+    message: "Image or caption is required"
+  });
+}
+
   const post = await postModel.create({
     caption: req.body.caption,
     imgUrl: file.url,
@@ -122,6 +128,31 @@ async function likePostController(req,res){
 
 }
 
+async function unLikePostController(eq,res){
+
+  const postId = req.params.postId
+  const username = req.user.username
+
+  //check if post is liked already
+  const isLiked = await likeModel.findOne({
+    post: postId,
+    user: username
+  })
+
+  if(!isLiked){
+    return res.status(400).json({
+      message: "Post is not liked"
+    })
+  }
+
+  // delete the like
+  await likeModel.findOneAndDelete({_id: isLiked._id})
+
+  return res.status(200).json({
+    message: "Post unliked successfully"
+  })
+}
+
 /**
  * get all posts and show in the feed
  */
@@ -130,19 +161,25 @@ async function getFeedController(req,res){
   const user = req.user
 
   // get all post + user detail also
-  const posts = await Promise.all((await postModel.find().populate("user").lean())
-  .map( async(post)=>{
-    /**
-     * type of psot is mongoose obj
-     * lean makes them as a normal obj and new properties can be created
-     */
+  const postsData = await postModel
+  .find()
+  .populate("user")
+  .sort({ createdAt: -1 })
+  .lean();
+
+const posts = await Promise.all(
+  postsData.map(async (post) => {
     const isLiked = await likeModel.findOne({
       user: user.username,
-      post: post._id
-    })
-    post.isLiked = Boolean(isLiked) //!!isLiked means if isLiked is null then false and if it has some value then true
-    return post
-  }))
+      post: post._id,
+    });
+
+    return {
+      ...post,
+      isLiked: Boolean(isLiked),
+    };
+  })
+);
 
   res.status(200).json({
     message:"posts fetched successfully!",
@@ -151,4 +188,4 @@ async function getFeedController(req,res){
 
 }
 
-module.exports = { createPostController, getPostController, getPostDetailsController, likePostController, getFeedController };
+module.exports = { createPostController, getPostController, getPostDetailsController, likePostController, getFeedController, unLikePostController };

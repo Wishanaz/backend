@@ -3,9 +3,7 @@ import "../style/Feed.scss"
 import { getTimeAgo } from '../utils/Time'
 
 const Post = ({user, post}) => {
-     const posts = {
-        createdAt: "2026-03-30T10:00:00Z"
-    };
+     
   return (
     <div className="post">
     
@@ -17,7 +15,7 @@ const Post = ({user, post}) => {
                         </div>
                         <div className="userInfo">
                             <span className='username'>{user.username}</span>
-                            <span className='time'>{getTimeAgo(posts.createdAt)}</span>
+                            <span className='time'>{getTimeAgo(post.createdAt || new Date())}</span>
                         </div>
                     </div>
     
