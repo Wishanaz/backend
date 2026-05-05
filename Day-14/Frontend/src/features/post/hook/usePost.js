@@ -1,37 +1,83 @@
-import {getFeed, createPost} from "../services/post.api"
+import { getFeed, createPost, likePost, unLikePost } from "../services/post.api"
 import { useContext } from "react"
-import {PostContext} from "../post.context"
+import { PostContext } from "../post.context"
 
-export const usePost = ()=>{
+export const usePost = () => {
     const context = useContext(PostContext)
 
-    const{loading, setLoading, post, setPost, feed, setFeed} = context
+    const {
+        loading,
+        setLoading,
+        post,
+        setPost,
+        feed,
+        setFeed,
+        updatePostInFeed
+    } = context
 
-    const handleGetFeed = async ()=>{
-        setLoading(true)
+    // 🔹 GET FEED
+    const handleGetFeed = async () => {
+        try {
+            setLoading(true)
             const data = await getFeed()
             setFeed(data.posts)
+        } catch (err) {
+            console.error(err)
+        } finally {
             setLoading(false)
+        }
     }
 
-    const handleCreatePost = async(imageFile, caption)=>{
-        setLoading(true)
+    // 🔹 CREATE POST
+    const handleCreatePost = async (imageFile, caption) => {
+        try {
+            setLoading(true)
+            const data = await createPost(imageFile, caption)
 
-        const data = await createPost(imageFile, caption)
-        setLoading(false)
+            setFeed(prev => [data.post, ...prev])
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
     }
 
-    const handlelike = async (post)=>{
-        setLoading(true)
-        const data = await likePost(post)
-        setLoading(false)
+    // 🔥 LIKE TOGGLE (OPTIMISTIC UI)
+    const toggleLike = async (post) => {
+        const isLiked = post.isLiked
+
+        const updatedPost = {
+            ...post,
+            isLiked: !isLiked
+        }
+
+        // ✅ SAFE UI UPDATE
+        if (updatePostInFeed) {
+            updatePostInFeed(updatedPost)
+        }
+
+        try {
+            if (!isLiked) {
+                await likePost(post._id)
+            } else {
+                await unLikePost(post._id)
+            }
+        } catch (err) {
+            console.error(err)
+
+            // 🔁 rollback safely
+            if (updatePostInFeed) {
+                updatePostInFeed(post)
+            }
+        }
     }
 
-    const handleUnlike = async (post)=>{
-        setLoading(true)
-        const data = await unLikePost(post)
-        setLoading(false)
+    return {
+        loading,
+        post,
+        feed,
+        handleGetFeed,
+        handleCreatePost,
+        toggleLike
     }
-
-    return{loading, post, feed, handleGetFeed, handleCreatePost}
 }
