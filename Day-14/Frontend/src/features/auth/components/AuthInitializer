@@ -1,0 +1,15 @@
+import { useEffect } from "react"
+import { useAuth } from "../hooks/useAuth"
+
+const AuthInitializer = ({ children }) => {
+
+    const { checkAuth } = useAuth()
+
+    useEffect(() => {
+        checkAuth()
+    }, [])
+
+    return children
+}
+
+export default AuthInitializer

@@ -7,6 +7,22 @@ export function useAuth(){
     const context = useContext(AuthContext)
     const {user, loading, setUser, setLoading} = context
 
+    
+
+    //function to check authentication on app load
+    const checkAuth = async() => {
+        try{
+            const data =  await getMe() // api se getMe ko call kia h
+            setUser(data.user) // response m user ka data mil rha tha woh set krdia user m  
+
+        }catch(error){
+            setUser(null) // agar error aata h to user ko null krdo 
+            console.log(error) 
+        }finally{
+            setLoading(false) // chahe error aaye ya na aaye loading false krdo
+        }
+    }
+
     // function to login user
     const handleLogin = async (username, password)=>{
         setLoading(true)
@@ -22,6 +38,7 @@ export function useAuth(){
         }
     }
 
+    // function to register user
     const handleRegister = async(username, email, password)=>{
         setLoading(true)
 
@@ -36,5 +53,5 @@ export function useAuth(){
         }
     }
 
-    return{user, loading, handleLogin, handleRegister}
+    return{user, loading, handleLogin, handleRegister, checkAuth}
 }

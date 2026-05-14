@@ -116,7 +116,6 @@ async function getMeController(req,res){
         user:{
             username: user.username,
             email: user.email,
-            password: user.password,
             bio: user.bio,
             profileImage: user.profileImage
         }
