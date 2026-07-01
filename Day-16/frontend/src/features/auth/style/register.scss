@@ -1,0 +1,61 @@
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  .form-container {
+    min-width: 300px;
+    padding: 2rem;
+    border-radius: 20px;
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      label {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      input {
+        padding: 0.9rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-size: 1rem;
+        outline: none;
+        transition: 0.2s;
+
+        &:focus {
+          border-color: #f1af63;
+        }
+      }
+    }
+    .auth-switch {
+      margin-top: 1.2rem;
+      text-align: center;
+
+      .switch-link {
+        color: #d6651a;
+        font-weight: 600;
+        text-decoration: none;
+        margin-left: 5px;
+      }
+    }
+  }
+}

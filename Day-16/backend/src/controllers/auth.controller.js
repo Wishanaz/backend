@@ -53,13 +53,16 @@ async function registerUser(req, res){
 
 //USER LOGIN
 async function loginUser(req,res){
-    const {email, username, password} = req.body
+    const {identifier, password} = req.body
+    // console.log("REQ:", req.body);
 
     const user = await userModel.findOne({
-        $or:[
-            {email}, {username}
+        $or: [
+            {email: identifier},
+            {username: identifier}
         ]
     }).select("+password")
+    // console.log("USER:", user);
 
     if(!user){
         return res.status(400).json({
@@ -67,7 +70,10 @@ async function loginUser(req,res){
         })
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password)
+    const isPasswordValid = await bcrypt.compare(
+        password,
+        user.password
+    )
 
     if(!isPasswordValid){
         return res.status(400).json({
@@ -113,7 +119,7 @@ async function logoutUser(req,res){
     res.clearCookie("token")
 
     // blacklist token using redis
-    await redis.set(token, Date.now().toString(), "EX", 60*60)
+    await redis.set(token, Date.now().toString(), "EX", 60*60*24*3)
 
     res.status(201).json({
         message: "logged out successfully!"
